@@ -1,0 +1,1 @@
+sudo docker run -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=Test1234' -p 1433:1433 -v /home/james/mssql:/var/opt/mssql -d microsoft/mssql-server-linux

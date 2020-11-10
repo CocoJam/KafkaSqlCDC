@@ -1,0 +1,16 @@
+!!Config.Kafka.KafkaClient
+actionKey: action
+autoCommit: 'false'
+brokerServer:
+- iP: localhost
+  port: 9092
+- iP: localhost
+  port: 9093
+- iP: localhost
+  port: 9094
+deserializer: org.apache.kafka.common.serialization.StringDeserializer
+groupId: test
+pollTime: 1
+reset: earliest
+serializer: org.apache.kafka.common.serialization.StringDeserializer
+topic: test

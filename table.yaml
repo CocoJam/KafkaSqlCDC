@@ -1,0 +1,15 @@
+!!Config.JDBC.InitiateSchema.TableSchema
+actionMapping:
+  DELETE: DELETE
+  INSERT: INSERT
+  UPDATE: UPDATE
+deleteEscapes:
+  deleteEscapeOrOnly: ONLY
+  whereClauseEscape:
+  - JOB_REF_NO
+tableInitQuery: select top 1 * from dbo.EOSS_BOM_CDC
+tableName: dbo.EOSS_BOM_CDC
+updateEscapes:
+  deleteEscapeOrOnly: ONLY
+  whereClauseEscape:
+  - JOB_REF_NO

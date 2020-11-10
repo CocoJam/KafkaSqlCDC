@@ -1,0 +1,9 @@
+!!Config.JDBC.JDBCConnection.Connection
+address:
+  iP: localhost
+  port: 1433
+connectionType: jdbc:sqlserver
+dataBase: EOSS
+user:
+  password: Test1234
+  username: sa
