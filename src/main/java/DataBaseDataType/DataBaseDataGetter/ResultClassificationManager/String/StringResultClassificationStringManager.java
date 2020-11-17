@@ -23,7 +23,6 @@ public class StringResultClassificationStringManager extends StringResultClassif
             Object o = iResultDataTypeBaseStrategy.classify(object.get(kClassEntry.getKey()), kClassEntry.getValue(), kClassEntry.getKey());
             data.put(kClassEntry.getKey(),o);
         }
-        System.out.println("out");
         return data;
     }
 }

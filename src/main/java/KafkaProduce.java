@@ -18,7 +18,7 @@ public class KafkaProduce {
 
         KafkaProducer kafkaProducer = new KafkaProducer(properties);
         StringBuilder stringBuilder = new StringBuilder();
-        try(Scanner scanner = new Scanner(new File("./sampleDelete.json"));){
+        try(Scanner scanner = new Scanner(new File("./sampleInsert.json"));){
             while(scanner.hasNext()){
                 stringBuilder.append(scanner.next());
             }

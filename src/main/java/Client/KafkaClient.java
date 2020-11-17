@@ -1,5 +1,6 @@
 package Client;
 
+import ErrorLogger.ExceptionParse;
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.TopicPartition;
 import org.slf4j.Logger;
@@ -59,11 +60,16 @@ public class KafkaClient<K, V, R> {
         TopicPartition topicPartition = adjustOffsetPartition(record);
         R r = null;
         if (functor != null) {
-            r = functor.apply(record);
+            try {
+                r = functor.apply(record);
+                logger.info(String.format("Topic - %s, Partition - %d, Value: %s, OffSet: %s", record.topic(), record.partition(), record.value(), record.offset()));
+                kafkaConsumer.commitSync(Collections.singletonMap(topicPartition, new OffsetAndMetadata(record.offset())));
+                logger.info(String.format("Topic - %s, Partition - %d, Value: %s committed", record.topic(), record.partition(), record.value()));
+            }
+            catch (Exception e){
+                logger.error(ExceptionParse.toString(e));
+            }
         }
-        logger.info(String.format("Topic - %s, Partition - %d, Value: %s, OffSet: %s", record.topic(), record.partition(), record.value(), record.offset()));
-        kafkaConsumer.commitSync(Collections.singletonMap(topicPartition, new OffsetAndMetadata(record.offset())));
-        logger.info(String.format("Topic - %s, Partition - %d, Value: %s committed", record.topic(), record.partition(), record.value()));
         return r;
     }
 
@@ -74,7 +80,7 @@ public class KafkaClient<K, V, R> {
                 records.forEach(x -> this.process(x));
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error(ExceptionParse.toString(e));
         } finally {
             kafkaConsumer.close();
             logger.info("Kafka Consumer closed");

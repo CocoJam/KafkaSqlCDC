@@ -59,7 +59,7 @@ public abstract class JDBCBaseController {
         return dataHash;
     }
 
-    public void Insert(Map<String,Object> jsonObject) {
+    public void Insert(Map<String,Object> jsonObject) throws Exception {
         InsertQueryLoaderBuilder insertQueryLoaderBuilder = new InsertQueryLoaderBuilder(
                 tableSchema.getTableName(),jsonObject,CLASS_MAP);
         String insertQueryStr = insertQueryLoaderBuilder.compile().compile();
@@ -70,17 +70,19 @@ public abstract class JDBCBaseController {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             logger.error(throwables.getMessage());
+            throw throwables;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e.getMessage());
+            throw e;
         }
     }
 
-    public void update(Map<String,Object> jsonObject) {
+    public void update(Map<String,Object> jsonObject) throws Exception {
         update(jsonObject,jsonObject);
     }
 
-    public void update(Map<String,Object> jsonObject,Map<String,Object> updateObject) {
+    public void update(Map<String,Object> jsonObject,Map<String,Object> updateObject) throws Exception {
         UpdateQueryLoaderBuilder updateQueryLoaderBuilder = new UpdateQueryLoaderBuilder(tableSchema.getTableName(),jsonObject,CLASS_MAP,updateObject);
         WhereFilterEnum escapeOrOnly =  WhereFilterEnum.valueOf(tableSchema.getUpdateEscapes().getDeleteEscapeOrOnly().toUpperCase());
         List<String> escapes = tableSchema.getUpdateEscapes().getWhereClauseEscape();
@@ -93,13 +95,15 @@ public abstract class JDBCBaseController {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
             logger.error(throwables.getMessage());
+            throw throwables;
         } catch (Exception e) {
             logger.error(e.getMessage());
             e.printStackTrace();
+            throw e;
         }
     }
 
-    public void delete(Map<String,Object> jsonObject) {
+    public void delete(Map<String,Object> jsonObject) throws Exception {
         DeleteQueryLoaderBuilder deleteQueryLoader = new DeleteQueryLoaderBuilder(
                 tableSchema.getTableName(),jsonObject,CLASS_MAP);
         WhereFilterEnum escapeOrOnly =  WhereFilterEnum.valueOf(tableSchema.getDeleteEscapes().getDeleteEscapeOrOnly().toUpperCase());
@@ -112,8 +116,12 @@ public abstract class JDBCBaseController {
             query.execute();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            logger.error(throwables.getMessage());
+            throw throwables;
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.getMessage());
+            throw e;
         };
     }
 }

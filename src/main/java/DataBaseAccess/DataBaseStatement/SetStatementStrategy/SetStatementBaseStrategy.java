@@ -52,13 +52,22 @@ public class SetStatementBaseStrategy<O> implements ISetStatementStrategy<Prepar
         }else if (byte[].class.equals(oClazz)) {
             statement.setBytes(location, (byte[]) o);
             return statement;
+        }else if (o == null && Object.class.equals(oClazz)){
+            statement.setObject(location, null);
+            return statement;
         }
         throw new IllegalStateException("Unexpected value: " + oClazz);
     }
 
     @Override
     public PreparedStatement setParameter(PreparedStatement statement, int location, O o) throws SQLException {
-        Class<?> oClazz = o.getClass();
+        Class<?> oClazz;
+        if(o == null){
+            oClazz = Object.class;
+
+        }else{
+            oClazz = o.getClass();
+        }
         return setParameter(statement, location, oClazz, o);
     }
 }
